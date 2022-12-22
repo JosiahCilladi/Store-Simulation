@@ -1,6 +1,8 @@
 App Name: Simulation
 Description: Allows you to quickly create recored in the Lightspeed Test Store.
 
+
+
 Testing URL: https://simulationcontrols.ngrok.io/simulation/events
 
 
@@ -14,26 +16,4 @@ Slack Flask Totorial:
 
 
 
-    Slack App:
-        Name: alar
-        Description: Alerts and Reports
-
-        Home:
-
-        StoreEvents:
-            - Store Opens
-            - Store Closes
-            - Shift Ends
-
-
-        Alerts:
-            Sales: [slackChannel ,Shop, Threshold, Time]
-            Registers: [slackChannel ,shop, Register, Cash Value Under]
-            New eCom Order: [slackChannel]
-            
-
-
-        Reports:
-            Sales: [slackChannel, storeEvent, store]
-            Register: [slackChannel, storeEvent, store, Register]
-            
+    
