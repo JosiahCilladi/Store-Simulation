@@ -1,6 +1,7 @@
-LightspeedSlack App
+App Name: Simulation
+Description: Allows you to quickly create recored in the Lightspeed Test Store.
 
-
+Testing URL: https://simulationcontrols.ngrok.io/simulation/events
 
 
 

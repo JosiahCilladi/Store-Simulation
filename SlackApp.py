@@ -19,9 +19,9 @@ bolt_app=App(token=os.environ.get("SLACK_BOT_TOKEN"),
 
 
 # Messages
-# -----------------------------------------------------------
+# -------------------------------------------------------------------------------------------------------------
 
-@bolt_app.message(re.compile("(hi|hello|hey) slacky"))
+@bolt_app.message(re.compile("(hi|hello|hey) simulation"))
 def reply_in_thread(payload: dict):
     """ This will reply in thread instead of creating a new thread """
     response = client.chat_postMessage(channel=payload.get('channel'),
@@ -41,8 +41,11 @@ def greetings(payload: dict, say: Say):
 
 
 #Slash Commands
-#-----------------------------------------------------------
-@bolt_app.command("/help")
+# -------------------------------------------------------------------------------------------------------------
+
+
+
+@bolt_app.command("/start")
 def help_command(say, ack):
     ack()
     text = {
@@ -51,7 +54,7 @@ def help_command(say, ack):
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": "/Sales : Sales Report"
+                    "text": "Do you want to start the simulation?"
                 }
             }
         ]
@@ -59,7 +62,7 @@ def help_command(say, ack):
     say(text=text)
 
 
-@bolt_app.command("/sales")
+@bolt_app.command("/end")
 def help_command(say, ack):
     ack()
     text = {
@@ -68,13 +71,66 @@ def help_command(say, ack):
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": """Sales Report"""
+                    "text": "Do you want to end the simulation?"
                 }
             }
         ]
     }
     say(text=text)
 
+@bolt_app.command("/createecom")
+def help_command(say, ack):
+    ack()
+    text = {
+	"blocks": [
+            {
+                "type": "header",
+                "text": {
+                    "type": "plain_text",
+                        				"text": "Create - eCom Order"
+                   
+                }
+            },
+            {
+                "type": "divider"
+            },
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                        				"text": "Create A Lightspeed eCom Order."
+                }
+            },
+            {
+                "type": "actions",
+                "elements": [
+                    {
+                        "type": "button",
+                                "text": {
+                                    "type": "plain_text",
+                                      						"text": "Yes"
+                                   
+                                },
+                        "style": "primary",
+                        "value": "click_me_123",
+                   					"action_id": "actionId-0"
+                    },
+                    {
+                        "type": "button",
+                                "text": {
+                                    "type": "plain_text",
+                                      						"text": "No"
+                                   
+                                },
+                        "style": "danger",
+                        "value": "click_me_124",
+                   					"action_id": "actionId-1"
+                    }
+                ]
+            }
+	]
+    }
+    say(text=text)
 
 handler = SlackRequestHandler(bolt_app)
 
@@ -84,13 +140,16 @@ handler = SlackRequestHandler(bolt_app)
 
 
 # Events
-# -----------------------------------------------------------
+# -------------------------------------------------------------------------------------------------------------
 
-@ app.route("/lightspeedSlackApp/events", methods=["POST"])
+@ app.route("/simulation/events", methods=["POST"])
 def slack_events():
     """ Declaring the route where slack will post a request """
     return handler.handle(request)
 
+
+# Home Tab
+# ---------------------------------------------------------
 
 @bolt_app.event("app_home_opened")
 def update_home_tab(client, event, logger):
@@ -448,4 +507,4 @@ def update_home_tab(client, event, logger):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080, debug=True)
+    app.run(host='0.0.0.0', port=3002, debug=True)
