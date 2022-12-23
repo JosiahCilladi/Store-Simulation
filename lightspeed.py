@@ -2,16 +2,16 @@
 """ Lightspeed_Command.py """
 # ---------------------------------------------------------
 # ---------------------------------------------------------
-# Project:       FERAL_USED_Gear
-# Company:       FERAL
+# Project:       Simulation-Controls
+# Company:       Josiah Cilladi - Dev
 # Auther:        Josiah Cilladi
-# File Name:     Lightspeed/Lightspeed_Command.py
-# Description:   Python Dictionary / Lightspeed API Converstion
-# Created:       Wed Dec 30 14:31:54 2020
+# File Name:     
+# Description:   Lightspeed R-Series OAuth Handling
+# Created:       
 
 # """ Resources """
 # ---------------------------------------------------------
-#   Settings.db
+#   
 # ---------------------------------------------------------
 # ---------------------------------------------------------
 
@@ -29,12 +29,12 @@ from dotenv import load_dotenv
 load_dotenv()  # take environment variables from .env.
 
 
-def resource_path(relative_path):
+# def resource_path(relative_path):
 
-    # Get absolute path to resource
-    base_path = getattr(sys, '_MEIPASS', os.path.dirname(
-        os.path.abspath(__file__)))
-    return os.path.join(base_path, relative_path)
+#     # Get absolute path to resource
+#     base_path = getattr(sys, '_MEIPASS', os.path.dirname(
+#         os.path.abspath(__file__)))
+#     return os.path.join(base_path, relative_path)
 
 
 
@@ -46,7 +46,6 @@ client_id=os.environ.get("CLIENT_ID")
 
 # refresh_token = '743dbf0176fe575f56e50d96721b7f3b0cda9d9d' # FERAL Lightspeed Account
 refresh_token = os.environ.get("REFRESH_TOKEN")
-print("refresh_toaken", refresh_token)
 access_token = ""
 header = ""
 accountID = ""
@@ -62,6 +61,9 @@ Test_Order = False
 
 
 class LightSpeed_API_Calls:
+    def __init__(self):
+        print("Address of self = ", id(self))
+    
 
     def Get_New_Access_Token(self, client_id, client_secret, rt):
         # print(client_id)
@@ -136,6 +138,9 @@ class LightSpeed_API_Calls:
         print("LightSpeed accountID = ", AS)
         print()
 
+
+
+
     def calculateExperation():
         now = datetime.datetime.now()
 
@@ -209,5 +214,4 @@ class LightSpeed_API_Calls:
     # Onboard_New_Access_Token("X", client_id, client_secret, temp_Token)
     Get_New_Access_Token("x", client_id, client_secret, refresh_token)
 
-
-    
+   

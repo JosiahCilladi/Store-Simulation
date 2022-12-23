@@ -1,0 +1,142 @@
+{
+  "type": "modal",
+
+  "callback_id": "view_1",
+  "title": { "type": "plain_text", "text": "Todays Simulation" },
+  "submit": { "type": "plain_text", "text": "Start" },
+  "blocks": [
+    {
+      "type": "header",
+      "text": {
+        "type": "plain_text",
+        "text": "Configure Todays Simulation"
+      }
+    },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": ":clock8: *Store Hours*"
+      }
+    },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "Opening:"
+      },
+      "accessory": {
+        "type": "timepicker",
+        "initial_time": "10:00",
+        "placeholder": {
+          "type": "plain_text",
+          "text": "Select time"
+        },
+        "action_id": "timepicker-action"
+      }
+    },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "Closing:"
+      },
+      "accessory": {
+        "type": "timepicker",
+        "initial_time": "20:00",
+        "placeholder": {
+          "type": "plain_text",
+          "text": "Select time"
+        },
+        "action_id": "timepicker-action"
+      }
+    },
+    {
+      "type": "input",
+      "element": {
+        "type": "number_input",
+        "is_decimal_allowed": false,
+        "action_id": "number_input-action"
+      },
+      "label": {
+        "type": "plain_text",
+        "text": "Number of Shifts",
+        "emoji": true
+      }
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": ":moneybag: *Total Sales:*"
+      }
+    },
+    {
+      "type": "input",
+      "element": {
+        "type": "number_input",
+        "is_decimal_allowed": false,
+        "action_id": "number_input-action"
+      },
+      "label": {
+        "type": "plain_text",
+        "text": "Cash"
+      }
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": ":globe_with_meridians: eCom:"
+      }
+    },
+    {
+      "type": "input",
+      "element": {
+        "type": "number_input",
+        "is_decimal_allowed": false,
+        "action_id": "number_input-action"
+      },
+      "label": {
+        "type": "plain_text",
+        "text": "Orders",
+        "emoji": true
+      }
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "type": "actions",
+      "elements": [
+        {
+          "type": "button",
+          "style": "primary",
+          "text": {
+            "type": "plain_text",
+            "text": "Start Simulation",
+            "emoji": true
+          },
+          "value": "click_me_123",
+          "action_id": "actionId-0"
+        },
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "text": "clear",
+            "emoji": true
+          },
+          "value": "click_me_123",
+          "action_id": "actionId-1"
+        }
+      ]
+    }
+  ]
+}

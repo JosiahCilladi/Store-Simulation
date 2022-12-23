@@ -1,0 +1,58 @@
+{
+  "type": "home",
+  "blocks": [
+    {
+      "type": "header",
+      "text": {
+        "type": "plain_text",
+        "text": "Simulation",
+        "emoji": true
+      }
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "type": "actions",
+      "elements": [
+        {
+          "type": "button",
+          "style": "primary",
+          "text": {
+            "type": "plain_text",
+            "text": "Configure",
+            "emoji": true
+          },
+          "value": "start-simulation",
+          "action_id": "actionId-0"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "text": {
+        "type": "plain_text",
+        "text": "Create",
+        "emoji": true
+      }
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "type": "actions",
+      "elements": [
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "text": "configure_simulation_button",
+            "emoji": true
+          },
+          "value": "configure_simulation_button",
+          "action_id": "configure_simulation_button"
+        }
+      ]
+    }
+  ]
+}
