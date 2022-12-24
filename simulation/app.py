@@ -49,7 +49,7 @@ def greetings(payload: dict, say: Say):
 # -------------------------------------------------------------------------------------------------------------
 
 # Start ---------------------------------------------------------------
-with open('simulation/configure_simulation/block_templates/configure_simulation/configure_simulation.json') as f:
+with open('simulation/day_simulator/block_templates/configure_simulation/day_simulator_settings.json') as f:
     startTemplateBlock = json.load(f)
 
 
