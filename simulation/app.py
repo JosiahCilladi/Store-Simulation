@@ -11,7 +11,7 @@ from slack_bolt.adapter.flask import SlackRequestHandler
 
 
 #files
-import TestFunctions
+import test_functions as TestFunctions
 
 #utility
 from dotenv import load_dotenv
@@ -49,7 +49,7 @@ def greetings(payload: dict, say: Say):
 # -------------------------------------------------------------------------------------------------------------
 
 # Start ---------------------------------------------------------------
-with open('Templates/startTemplate.json') as f:
+with open('simulation/configure_simulation/block_templates/configure_simulation/configure_simulation.json') as f:
     startTemplateBlock = json.load(f)
 
 
@@ -135,9 +135,6 @@ handler = SlackRequestHandler(bolt_app)
 
 
 
-
-
-
 # Events
 # -------------------------------------------------------------------------------------------------------------
 
@@ -150,7 +147,7 @@ def slack_events():
 # Home Tab
 # ---------------------------------------------------------
 
-with open('Templates/homeTemplate.json') as home:
+with open('simulation/home/block_templates/home/homeTemplate.json') as home:
     homeTemplate = json.load(home)
 
 @bolt_app.event("app_home_opened")
@@ -166,13 +163,6 @@ def update_home_tab(client, event, logger):
         )
     except Exception as e:
         logger.error(f"Error publishing home tab: {e}")
-
-
-
-
-	
-
-
 
 
 
