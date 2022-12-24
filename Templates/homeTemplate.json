@@ -20,11 +20,11 @@
           "style": "primary",
           "text": {
             "type": "plain_text",
-            "text": "Configure",
+            "text": "Configure Simulation",
             "emoji": true
           },
-          "value": "start-simulation",
-          "action_id": "actionId-0"
+          "value": "configure_simulation_button",
+          "action_id": "configure_simulation_button"
         }
       ]
     },
@@ -46,11 +46,11 @@
           "type": "button",
           "text": {
             "type": "plain_text",
-            "text": "configure_simulation_button",
+            "text": "2",
             "emoji": true
           },
-          "value": "configure_simulation_button",
-          "action_id": "configure_simulation_button"
+          "value": "2",
+          "action_id": "2"
         }
       ]
     }
