@@ -11,13 +11,24 @@ from slack_bolt.adapter.flask import SlackRequestHandler
 
 
 #files
+
+#from home import home_blueprint
+from home.home import construc_blueprint
+import home
 import test_functions as TestFunctions
 
 #utility
 from dotenv import load_dotenv
-
-
 load_dotenv()  # take environment variables from .env.
+
+
+
+# set up Slack OAuth Code Here
+
+
+
+
+
 
 app = Flask(__name__) # Flask App
 client = WebClient(token=os.environ.get("SLACK_BOT_TOKEN"))
@@ -48,10 +59,9 @@ def greetings(payload: dict, say: Say):
 # -------------------------------------------------------------------------------------------------------------
 # -------------------------------------------------------------------------------------------------------------
 
-# Start ---------------------------------------------------------------
+
 with open('simulation/day_simulator/block_templates/configure_simulation/day_simulator_settings.json') as f:
     startTemplateBlock = json.load(f)
-
 
 @bolt_app.command("/start")
 @bolt_app.action("configure_simulation_button")
@@ -74,63 +84,6 @@ def testLS(ack):
 
 
 
-@bolt_app.command("/createecom")
-def help_command(say, ack):
-    ack()
-    text = {
-	"blocks": [
-            {
-                "type": "header",
-                "text": {
-                    "type": "plain_text",
-                        				"text": "Create - eCom Order"
-                   
-                }
-            },
-            {
-                "type": "divider"
-            },
-            {
-                "type": "section",
-                "text": {
-                    "type": "mrkdwn",
-                        				"text": "Create A Lightspeed eCom Order."
-                }
-            },
-            {
-                "type": "actions",
-                "elements": [
-                    {
-                        "type": "button",
-                                "text": {
-                                    "type": "plain_text",
-                                      						"text": "Yes"
-                                   
-                                },
-                        "style": "primary",
-                        "value": "click_me_123",
-                   					"action_id": "actionId-0"
-                    },
-                    {
-                        "type": "button",
-                                "text": {
-                                    "type": "plain_text",
-                                      						"text": "No"
-                                   
-                                },
-                        "style": "danger",
-                        "value": "click_me_124",
-                   					"action_id": "actionId-1"
-                    }
-                ]
-            }
-	]
-    }
-    say(text=text)
-
-
-
-
 handler = SlackRequestHandler(bolt_app)
 
 
@@ -144,8 +97,12 @@ def slack_events():
     return handler.handle(request)
 
 
+
 # Home Tab
 # ---------------------------------------------------------
+
+# app.register_blueprint(construc_blueprint(slack_events))
+
 
 with open('simulation/home/block_templates/home/homeTemplate.json') as home:
     homeTemplate = json.load(home)
