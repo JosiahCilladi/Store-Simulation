@@ -29,7 +29,6 @@ load_dotenv()  # take environment variables from .env.
 
 
 
-
 app = Flask(__name__) # Flask App
 client = WebClient(token=os.environ.get("SLACK_BOT_TOKEN"))
 bolt_app=App(token=os.environ.get("SLACK_BOT_TOKEN"),
