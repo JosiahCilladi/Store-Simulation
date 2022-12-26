@@ -1,34 +1,34 @@
+# system
 import os
 import re
 import json
 
+#Server
 from flask import Flask, request
 
-#slack
+# slack
 from slack_sdk import WebClient
 from slack_bolt import App, Say
 from slack_bolt.adapter.flask import SlackRequestHandler
 
-
-#files
-
-#from home import home_blueprint
-from home.home import construc_blueprint
-import home
-import test_functions as TestFunctions
-
-#utility
+# utility
 from dotenv import load_dotenv
 load_dotenv()  # take environment variables from .env.
 
 
+# files
+from api.api import api_blueprint
+import test_functions as TestFunctions
+from day_simulator.day_simulator import  get_day_simulation_config
 
-# set up Slack OAuth Code Here
+
+# Slack OAuth
+# -------------------------------------------------------------------------------------------------------------
 
 
 
-
-
+# Start Flask and Slack Bolt apps
+# -------------------------------------------------------------------------------------------------------------
 app = Flask(__name__) # Flask App
 client = WebClient(token=os.environ.get("SLACK_BOT_TOKEN"))
 bolt_app=App(token=os.environ.get("SLACK_BOT_TOKEN"),
@@ -38,14 +38,6 @@ bolt_app=App(token=os.environ.get("SLACK_BOT_TOKEN"),
 
 # Messages
 # -------------------------------------------------------------------------------------------------------------
-
-# @bolt_app.message(re.compile("(hi|hello|hey) simulation"))
-def reply_in_thread(payload: dict):
-    """ This will reply in thread instead of creating a new thread """
-    response = client.chat_postMessage(channel=payload.get('channel'),
-                                       thread_ts=payload.get('ts'),
-                                       text=f"Hi<@{payload['user']}>")
-
 
 @bolt_app.message("hello ls")
 def greetings(payload: dict, say: Say):
@@ -76,6 +68,18 @@ def open_modal(ack, body, client):
     )
 
 
+@bolt_app.view("view_1")
+def handle_day_simulation_config_sumbit(ack, body, view ,logger):
+    ack()
+    
+    input_data = view["state"]["values"]
+  
+
+    
+    get_day_simulation_config(input_data)
+
+
+
 @bolt_app.command("/end")
 def testLS(ack):
 	ack()
@@ -83,12 +87,9 @@ def testLS(ack):
 
 
 
-handler = SlackRequestHandler(bolt_app)
-
-
-
 # Events
 # -------------------------------------------------------------------------------------------------------------
+handler = SlackRequestHandler(bolt_app)
 
 @ app.route("/simulation/events", methods=["POST"])
 def slack_events():
@@ -99,10 +100,6 @@ def slack_events():
 
 # Home Tab
 # ---------------------------------------------------------
-
-# app.register_blueprint(construc_blueprint(slack_events))
-
-
 with open('simulation/home/block_templates/home/homeTemplate.json') as home:
     homeTemplate = json.load(home)
 
@@ -119,6 +116,14 @@ def update_home_tab(client, event, logger):
         )
     except Exception as e:
         logger.error(f"Error publishing home tab: {e}")
+
+
+
+# Simulation API Flask Blueprint
+# -------------------------------------------------------------------------------------------------------------
+app.register_blueprint(api_blueprint)
+
+
 
 
 

@@ -14,53 +14,41 @@
     },
     {
       "type": "section",
+
       "text": {
         "type": "mrkdwn",
-        "text": ":clock8: *Store Hours*"
-      }
-    },
-    {
-      "type": "section",
-      "text": {
-        "type": "mrkdwn",
-        "text": "Opening:"
-      },
-      "accessory": {
-        "type": "timepicker",
-        "initial_time": "10:00",
-        "placeholder": {
-          "type": "plain_text",
-          "text": "Select time"
-        },
-        "action_id": "timepicker-action"
-      }
-    },
-    {
-      "type": "section",
-      "text": {
-        "type": "mrkdwn",
-        "text": "Closing:"
-      },
-      "accessory": {
-        "type": "timepicker",
-        "initial_time": "20:00",
-        "placeholder": {
-          "type": "plain_text",
-          "text": "Select time"
-        },
-        "action_id": "timepicker-action"
+        "text": ":clock8: *Time Span*"
       }
     },
     {
       "type": "input",
+      "block_id": "time_span",
       "element": {
         "type": "number_input",
-        "is_decimal_allowed": false,
-        "action_id": "number_input-action"
+
+        "is_decimal_allowed": true,
+        "action_id": "time_span",
+        "initial_value": "0.01"
       },
       "label": {
         "type": "plain_text",
-        "text": "Number of Shifts",
+        "text": "Time Span",
+        "emoji": true
+      }
+    },
+    {
+      "type": "input",
+      "block_id": "number_of_shifts",
+      "element": {
+        "type": "number_input",
+
+        "is_decimal_allowed": false,
+        "action_id": "number_of_shifts",
+        "initial_value": "2"
+      },
+      "label": {
+        "type": "plain_text",
+        "text": "Shifts",
         "emoji": true
       }
     },
@@ -68,19 +56,22 @@
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": ":moneybag: *Total Sales:*"
+        "text": ":tshirt: *Items Sold:*"
       }
     },
     {
       "type": "input",
+      "block_id": "items_sold",
       "element": {
         "type": "number_input",
+
         "is_decimal_allowed": false,
-        "action_id": "number_input-action"
+        "action_id": "items_sold",
+        "initial_value": "100"
       },
       "label": {
         "type": "plain_text",
-        "text": "Cash"
+        "text": "Number"
       }
     },
     {
@@ -92,10 +83,12 @@
     },
     {
       "type": "input",
+      "block_id": "number_ecom_orders",
       "element": {
         "type": "number_input",
         "is_decimal_allowed": false,
-        "action_id": "number_input-action"
+        "action_id": "number_ecom_orders",
+        "initial_value": "5"
       },
       "label": {
         "type": "plain_text",
@@ -108,24 +101,13 @@
       "elements": [
         {
           "type": "button",
-          "style": "primary",
-          "text": {
-            "type": "plain_text",
-            "text": "Start Simulation",
-            "emoji": true
-          },
-          "value": "click_me_123",
-          "action_id": "actionId-0"
-        },
-        {
-          "type": "button",
           "text": {
             "type": "plain_text",
             "text": "clear",
             "emoji": true
           },
-          "value": "click_me_123",
-          "action_id": "actionId-1"
+          "value": "clear_day_sim_config",
+          "action_id": "clear_day_sim_config"
         }
       ]
     }

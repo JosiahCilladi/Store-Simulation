@@ -1,51 +1,23 @@
-# ---------------------------------------------------------
-""" Lightspeed_Command.py """
-# ---------------------------------------------------------
-# ---------------------------------------------------------
-# Project:       Simulation-Controls
-# Company:       Josiah Cilladi - Dev
-# Auther:        Josiah Cilladi
-# File Name:     
-# Description:   Lightspeed R-Series OAuth Handling
-# Created:       
-
-# """ Resources """
-# ---------------------------------------------------------
-#   
-# ---------------------------------------------------------
-# ---------------------------------------------------------
-
-import requests
-import json
-from time import *
+# System
 import os
-import sys
-import time
+import json
+
+# requests
+import requests
+
+# time
+from time import *
 import datetime
-from datetime import date
 
+# Utilty
 from dotenv import load_dotenv
-
 load_dotenv()  # take environment variables from .env.
 
-
-# def resource_path(relative_path):
-
-#     # Get absolute path to resource
-#     base_path = getattr(sys, '_MEIPASS', os.path.dirname(
-#         os.path.abspath(__file__)))
-#     return os.path.join(base_path, relative_path)
-
-
-
-# import threading
-# from oauthlib.oauth2 import LegacyApplicationClient
-# from requests_oauthlib import OAuth2Session
+# Environment Varibales 
 client_secret = os.environ.get("CLIENT_SECRET")
 client_id=os.environ.get("CLIENT_ID")
-
-# refresh_token = '743dbf0176fe575f56e50d96721b7f3b0cda9d9d' # FERAL Lightspeed Account
 refresh_token = os.environ.get("REFRESH_TOKEN")
+
 access_token = ""
 header = ""
 accountID = ""
@@ -53,11 +25,6 @@ expires_in = ""
 my_timer = ""
 Bucket_Limit = 0/60
 Drip_Rate = float(00.00)
-
-
-# Test_Order = True will put all items in LS Order # 1120
-# Test_Order = False will Creat New Order for each Quote upload
-Test_Order = False
 
 
 class LightSpeed_API_Calls:
@@ -127,10 +94,7 @@ class LightSpeed_API_Calls:
         # print(at)
 
         respnce = json.loads(responce.text)
-        # print("ACCOUNT Status and Header")
-        # print(type(respnce))
-        # print(respnce)
-        # print()
+    
 
         AS = (respnce['Account']['accountID'])
         global accountID
@@ -148,7 +112,6 @@ class LightSpeed_API_Calls:
         print("now", now)
         print("expires_in", expires_in)
         print("today", today)
-        # result = datetime.datetime.now() - datetime.timedelta(seconds=X)
         timeElapst = now - today
         print("timeElapst", timeElapst)
         timeRemaining = datetime.timedelta(seconds=expires_in) - timeElapst
@@ -168,29 +131,15 @@ class LightSpeed_API_Calls:
         else:
             print("Dont need to Refresh token yet")
 
-    # def Refresh_Auth_Token(self):
-    #     self.Get_New_Access_Token(client_id, client_secret, refresh_token)
-
-    # -- Item --
-    # ---------------------------------------------------
-    # ---------------------------------------------------
 
 
 
 
-    
 
-    #This is used to get a Access_Token and and Refresh_Token
-    # will be used to on bourd new lightspeed accounts
-
-    # https://cloud.lightspeedapp.com/oauth/authorize.php?response_type=code&client_id=156d1bed0cc92d4ee2e704a680e2e028b77dbedd8968a783781216b7b6ce7e00&scope=employee:all
 
     temp_Token = "acf302bcaf1d10a2e04df616b58140bab6586e51"
 
     def Onboard_New_Access_Token(self, client_id, client_secret, temp_Token):
-        # print(client_id)
-        # print(client_secret)
-        # print(rt)
         global today
         today = datetime.datetime.now()
         print("Today's date:", today)
@@ -205,13 +154,8 @@ class LightSpeed_API_Calls:
             'https://cloud.lightspeedapp.com/oauth/access_token.php', data=payload).json()
 
         print(at)
-        # print("Lightspeed Responce")
-        # print(at)
 
-      
-        
-
-    # Onboard_New_Access_Token("X", client_id, client_secret, temp_Token)
+    
     Get_New_Access_Token("x", client_id, client_secret, refresh_token)
 
    
