@@ -61,12 +61,12 @@
     },
     {
       "type": "input",
-      "block_id": "items_sold",
+      "block_id": "num_total_sales",
       "element": {
         "type": "number_input",
 
         "is_decimal_allowed": false,
-        "action_id": "items_sold",
+        "action_id": "num_total_sales",
         "initial_value": "100"
       },
       "label": {
