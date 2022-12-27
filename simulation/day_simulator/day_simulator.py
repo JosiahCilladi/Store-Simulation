@@ -3,7 +3,7 @@
 from datetime import datetime
 from datetime import timedelta
 from time import sleep
-import day_simulator.endpoints as endpoints
+import services.lightspeed.lightspeed_r.endpoints as endpoints
 
 # Receve Data from Simulation Config Slack Modle
 def get_day_simulation_config(view):
