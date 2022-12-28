@@ -43,7 +43,7 @@ bolt_app=App(token=os.environ.get("SLACK_BOT_TOKEN"),
 def greetings(payload: dict, say: Say):
     """ This will check all the message and pass only those which has 'hello slacky' in it """
     user = payload.get("user")
-    say(f"Hi <@{user}>")
+    say(f"Hi <@{user}>") 
 
 
 # Slash Commands

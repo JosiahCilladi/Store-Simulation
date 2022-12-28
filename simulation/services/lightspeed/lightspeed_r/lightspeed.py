@@ -60,7 +60,7 @@ def send_request(typ,url,payload=None):
 
     else:
         responce = requests.request(typ, url, headers=headers, data=payload)
-
+        print(responce.text)
         bucket_limit = responce.headers["x-ls-api-bucket-level"]
         drip_rate = responce.headers["x-ls-api-drip-rate"]
         os.environ["BUCKET_LIMIT"] = str(bucket_limit)

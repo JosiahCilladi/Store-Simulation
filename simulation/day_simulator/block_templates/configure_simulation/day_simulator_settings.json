@@ -44,7 +44,7 @@
 
         "is_decimal_allowed": false,
         "action_id": "number_of_shifts",
-        "initial_value": "2"
+        "initial_value": "1"
       },
       "label": {
         "type": "plain_text",
@@ -67,7 +67,7 @@
 
         "is_decimal_allowed": false,
         "action_id": "num_total_sales",
-        "initial_value": "100"
+        "initial_value": "1"
       },
       "label": {
         "type": "plain_text",
@@ -88,7 +88,7 @@
         "type": "number_input",
         "is_decimal_allowed": false,
         "action_id": "number_ecom_orders",
-        "initial_value": "5"
+        "initial_value": "1"
       },
       "label": {
         "type": "plain_text",
