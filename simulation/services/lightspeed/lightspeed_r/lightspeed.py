@@ -17,8 +17,9 @@ load_dotenv()  # take environment variables from .env.
 client_secret = os.environ.get("CLIENT_SECRET")
 client_id=os.environ.get("CLIENT_ID")
 refresh_token = os.environ.get("REFRESH_TOKEN")
+# access_token = os.environ.get("ACCESS_TOKEN")
 
-access_token = ""
+# access_token = ""
 header = ""
 accountID = ""
 expires_in = ""
@@ -27,135 +28,163 @@ Bucket_Limit = 0/60
 Drip_Rate = float(00.00)
 
 
-class LightSpeed_API_Calls:
-    def __init__(self):
-        print("Address of self = ", id(self))
+
+def get_headers():
+
+    if os.environ.get("ACCESS_TOKEN"):
+        pass
+    else:
+        Get_New_Access_Token(client_id, client_secret, refresh_token)
+        print("access_token", os.environ.get("ACCESS_TOKEN"))
+
+
+
+    headers = {"Authorization": "Bearer {0}".format(
+        os.environ.get("ACCESS_TOKEN"))}
+    print("Check Responce")
     
 
-    def Get_New_Access_Token(self, client_id, client_secret, rt):
-        # print(client_id)
-        # print(client_secret)
-        # print(rt)
-        global today
-        today = datetime.datetime.now()
-        print("Today's date:", today)
 
-        payload = {
-            'refresh_token': rt,
-            'client_secret': client_secret,
-            'client_id': client_id,
-            'grant_type': 'refresh_token',
-        }
-        at = requests.post(
-            'https://cloud.lightspeedapp.com/oauth/access_token.php', data=payload).json()
-
-        # print()
-        # print("Lightspeed Responce")
-        # print(at)
-
-        global access_token
-
-        access_token = at['access_token']
-        global expires_in
-        expires_in = at['expires_in']
-        expires_in = int(expires_in)
-
-        print()
-        print("access_token = ", access_token)
-        print("expires_in", expires_in)
-
-        global header
-        header = {"Authorization": "Bearer {0}".format(access_token)}
-        url = 'https://api.lightspeedapp.com/API/Account.json'
-
-        print("HEADER = ", header)
-        print()
-
-        responce = requests.get(url=url, headers=header)
-
-        global Bucket_Limit
-        global Drip_Rate
-
-        #! **** **** ****
-        print("********************")
-        print()
-        Bucket_Limit = responce.headers["x-ls-api-bucket-level"]
-        print("Bucket_Limit = ", Bucket_Limit)
-        Drip_Rate = responce.headers["x-ls-api-drip-rate"]
-        print("Drop_Rate =", Drip_Rate)
-        # print(responce.headers)
-        print()
-        print("********************")
-        print()
-        #! **** **** ****
-
-        at = responce.json()
-        # print("ACCOUNT Status")
-        # print(at)
-
-        respnce = json.loads(responce.text)
-    
-
-        AS = (respnce['Account']['accountID'])
-        global accountID
-        accountID = AS
-        print("LightSpeed accountID = ", AS)
-        print()
+    return headers
 
 
 
 
-    def calculateExperation():
-        now = datetime.datetime.now()
+def send_request(typ,url,payload=None):
+    check_rate_limit(typ)
 
-        print("CALCULATE EXperation Time")
-        print("now", now)
-        print("expires_in", expires_in)
-        print("today", today)
-        timeElapst = now - today
-        print("timeElapst", timeElapst)
-        timeRemaining = datetime.timedelta(seconds=expires_in) - timeElapst
-        print(timeRemaining)
+    headers = get_headers()
 
-        addSeconds = expires_in - 20
-        x = today + datetime.timedelta(seconds=addSeconds)
-        print("expiredTime Cal", x)
+    if typ == "GET":
+        responce = requests.request(typ, url, headers=headers)
 
-        if x <= now:
-            print()
-            print("REFRESHING Lightspeed Token")
-            time.sleep(40)
-            a = LightSpeed_API_Calls()
-            a.Refresh_Auth_Token()
+    else:
+        responce = requests.request(typ, url, headers=headers, data=payload)
 
-        else:
-            print("Dont need to Refresh token yet")
+        bucket_limit = responce.headers["x-ls-api-bucket-level"]
+        drip_rate = responce.headers["x-ls-api-drip-rate"]
+        os.environ["BUCKET_LIMIT"] = str(bucket_limit)
+        os.environ["DRIP_RATE"] = str(drip_rate)
+        print("bucket_limit", bucket_limit)
+        print("drip_rate", drip_rate)
 
-
-
-
-
-
-
-    temp_Token = "acf302bcaf1d10a2e04df616b58140bab6586e51"
-
-    def Onboard_New_Access_Token(self, client_id, client_secret, temp_Token):
-        global today
-        today = datetime.datetime.now()
-        print("Today's date:", today)
-
-        payload = {
-            'code':  temp_Token,
-            'client_secret': client_secret,
-            'client_id': client_id,
-            'grant_type': 'authorization_code',
-        }
-        at = requests.post(
-            'https://cloud.lightspeedapp.com/oauth/access_token.php', data=payload).json()
-
-        print(at)
+    return responce
 
     
-    Get_New_Access_Token("x", client_id, client_secret, refresh_token)
+def check_rate_limit(typ):
+    bucket_limit = os.environ.get("BUCKET_LIMIT")
+    drip_rate = os.environ.get("DRIP_RATE")
+    if bucket_limit:
+        pass
+    else:
+        bucket_limit = "1/60"
 
-   
+    if drip_rate:
+        pass
+    else:
+        drip_rate = 1
+    print("bucket_limit", bucket_limit)
+    bucket_limit = bucket_limit.split("/")
+    bucket_size = float(bucket_limit[1])
+    bucket_level = float(bucket_limit[0])
+    bucket_remaining = bucket_size - bucket_level
+
+    print("bucket", bucket_size, bucket_level)
+    cost = 10
+
+    if typ == "POST" or typ == "PUT" or typ == "DELETE":
+        cost = 10
+    elif typ == "GET":
+        cost = 1
+
+    print("COST", cost)
+
+    print(typ,bucket_limit,drip_rate)
+
+    if bucket_remaining > cost:
+        pass
+    else:
+        wait_time = (cost - bucket_remaining) / int(drip_rate)
+        print("waiting", wait_time)
+        sleep(wait_time)
+    
+    return
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def Get_New_Access_Token(client_id, client_secret, rt):
+
+    today = datetime.datetime.now()
+    print("Today's date:", today)
+
+    payload = {
+        'refresh_token': rt,
+        'client_secret': client_secret,
+        'client_id': client_id,
+        'grant_type': 'refresh_token',
+    }
+    responce = requests.post(
+        'https://cloud.lightspeedapp.com/oauth/access_token.php', data=payload).json()
+
+    access_token = responce['access_token']
+    expires_in = responce['expires_in']
+    print("access_token = ", access_token)
+    print("expires_in", expires_in)
+    os.environ["ACCESS_TOKEN"] = str(access_token)
+    os.environ["EXPIRES_IN"] = str(expires_in)
+
+    return 
+
+
+def account_info():
+    header = get_headers()
+    url = 'https://api.lightspeedapp.com/API/Account.json'
+    responce = requests.get(url=url, headers=header)
+
+    at = responce.json()
+    # print("ACCOUNT Status")
+    # print(at)
+
+    respnce = json.loads(responce.text)
+
+    account_id = (respnce['Account']['accountID'])
+    print("LightSpeed accountID = ", account_id)
+    print()
+
+    return account_id
+
+
+
+
+temp_Token = "acf302bcaf1d10a2e04df616b58140bab6586e51"
+
+def Onboard_New_Access_Token(self, client_id, client_secret, temp_Token):
+    global today
+    today = datetime.datetime.now()
+    print("Today's date:", today)
+
+    payload = {
+        'code':  temp_Token,
+        'client_secret': client_secret,
+        'client_id': client_id,
+        'grant_type': 'authorization_code',
+    }
+    at = requests.post(
+        'https://cloud.lightspeedapp.com/oauth/access_token.php', data=payload).json()
+
+    print(at)
+
+
+# check_rate_limit("POST")
