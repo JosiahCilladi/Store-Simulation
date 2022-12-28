@@ -20,9 +20,9 @@ def account_info():
     url = 'https://api.lightspeedapp.com/API/Account.json'
 
     response = send_request("GET", url)
-    json_response = json.loads(response.text)
+  
 
-    print(json.dumps(json_response, indent=1))
+    print(json.dumps(response, indent=1))
 
 
 
@@ -31,21 +31,18 @@ def open_register():
 
     url = "https://api.lightspeedapp.com/API/V3/Account/295355/Register/1/open.json"
 
-    data = [{
+    payload = [{
         "amount": "1000",
        	"notes": "Register opened via API",
     	"employeeID": "1",
     	"paymentTypeID": "1"
     }]
 
-    payload = json.dumps(data)
+   
     # response = requests.request("POST", url, headers=headers, data=payload)
     response = send_request("POST", url, payload)
-
-    json_response = json.loads(response.text)
-
-    print(json.dumps(json_response, indent=1))
-
+    print(json.dumps(response, indent=1))
+    
 
 
 def close_register():
@@ -53,54 +50,14 @@ def close_register():
 
     url = "https://api.lightspeedapp.com/API/V3/Account/295355/Register/1/close.json"
 
-    data = [{
+    payload = [{
         "notes": "Closed Register via the API",
         "openTime": "2021-04-06",
         "closeEmployeeID": "1"
     }]
-    payload = json.dumps(data)
     response = send_request("POST", url, payload)
+    print(json.dumps(response, indent=1))
 
-    json_response = json.loads(response.text)
-
-    print(json.dumps(json_response, indent=1))
-
-
-
-def create_sale1():
-    print("create_sale")
-
-
-    url = "https://api.lightspeedapp.com/API/V3/Account/295355/Sale.json"
-
-  
-    data = [{
-        "discountPercent": "0",
-        "completed": "false",
-        "archived": "false",
-        "voided": "false",
-        "enablePromotions": "true",
-        "isTaxInclusive": "false",
-        "referenceNumber": "",
-        "receiptPreference": "printed",
-        "customerID": "1",
-        "discountID": "0",
-        "employeeID": "1",
-        "tipEmployeeID": "0",
-        "quoteID": "0",
-        "registerID": "1",
-        "shipToID": "0",
-        "shopID": "1",
-        "taxCategoryID": "0"
-    }]
-    payload = json.dumps(data)
-    response = send_request("POST", url, payload)
-    json_response = json.loads(response.text)
-    print(json.dumps(json_response, indent=1))
-        
-    sale_id = json_response["Sale"]["saleID"]
-    create_sale_line(sale_id)
-    complete_sale(sale_id)
 
 
 
@@ -109,9 +66,9 @@ def create_ecom_sale():
     print("create_ecom_sale")
     url = "https://api.lightspeedapp.com/API/V3/Account/295355/Sale.json"
     
-    data = [{
+    payload = [{
         "discountPercent": "0",
-        "completed": "false",
+        "completed": "true",
         "archived": "false",
         "voided": "false",
         "enablePromotions": "true",
@@ -127,17 +84,34 @@ def create_ecom_sale():
         "registerID": "1",
         "shipToID": "0",
         "shopID": "1",
-        "taxCategoryID": "0"
+        "taxCategoryID": "0",
+        "SaleLines": {
+            "SaleLine": {
+                    "itemID": 1,
+                    "note": "Store Credit",
+                    "unitQuantity": 1,
+                    "unitPrice": 50,
+                    "taxClassID": 0,
+                    "avgCost": 0,
+                    "fifoCost": 0
+            }
+        },
+        "SalePayments": {
+            "SalePayment": {
+                "amount": 107,
+              		"paymentTypeID": 1,
+                "creditAccountID": 1
+            }
+        }
     }]
-    payload = json.dumps(data)
 
     response = send_request("POST", url, payload)
 
-    json_response = json.loads(response.text)
-    sale_id = json_response["Sale"]["saleID"]
-    print(json.dumps(json_response, indent=1))
-    create_sale_line(sale_id)
-    complete_sale(sale_id)
+    
+    # sale_id = response["Sale"]["saleID"]
+    print(json.dumps(response, indent=1))
+    # create_sale_line(sale_id)
+    # complete_sale(sale_id)
 
 
 
@@ -146,7 +120,7 @@ def create_sale_line(sale_id):
 
     url = (f"https://api.lightspeedapp.com/API/V3/Account/295355/Sale/{sale_id}/SaleLine.json")
 
-    data = [{
+    payload = [{
         "employeeID": "1",
         "itemID": "1",
         "shopID": "1",
@@ -154,13 +128,11 @@ def create_sale_line(sale_id):
         "createTime": now
     }]
 
-    payload = json.dumps(data)
-
     response = send_request("POST", url, payload)
 
-    json_response = json.loads(response.text)
+    
 
-    print(json.dumps(json_response, indent=1))
+    print(json.dumps(response, indent=1))
 
     
 def complete_sale(sale_id):
@@ -169,7 +141,7 @@ def complete_sale(sale_id):
     url = (
         f"https://api.lightspeedapp.com/API/V3/Account/295355/Sale/{sale_id}.json")
 
-    data = [{
+    payload = [{
         "discountPercent": "0",
         "completed": "true",
         "completeTime": now,
@@ -186,13 +158,8 @@ def complete_sale(sale_id):
         "taxCategoryID": "1"
     }]
 
-    payload = json.dumps(data)
-
     response = send_request("PUT", url, payload)
-
-    json_response = json.loads(response.text)
-
-    print(json.dumps(json_response, indent=1))
+    print(json.dumps(response, indent=1))
 
 
 def create_sale():
@@ -200,7 +167,7 @@ def create_sale():
 
     url = "https://api.lightspeedapp.com/API/V3/Account/295355/Sale.json"
 
-    data = [{
+    payload = [{
         "discountPercent": "0",
         "completed": "true",
         "archived": "false",
@@ -238,12 +205,13 @@ def create_sale():
             }
 
     }]
-    payload = json.dumps(data)
+    
     response = send_request("POST", url, payload)
-    json_response = json.loads(response.text)
-    print(json.dumps(json_response, indent=1))
-
-
+    
+    # sale_id = response["Sale"]["saleID"]
+    print(json.dumps(response, indent=1))
+    # create_sale_line(sale_id)
+    # complete_sale(sale_id)
 
 
 

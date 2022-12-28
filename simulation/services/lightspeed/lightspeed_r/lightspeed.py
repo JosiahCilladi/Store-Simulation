@@ -54,20 +54,31 @@ def send_request(typ,url,payload=None):
     check_rate_limit(typ)
 
     headers = get_headers()
+    
+    
+    # try: Execpt Error Handling
+    
+    try:
+        if typ == "GET":
+            responce = requests.request(typ, url, headers=headers)
+        else:
+            payload = json.dumps(payload)
+            responce = requests.request(typ, url, headers=headers, data=payload)
+    except:
+        print("***************************ERROR:", responce.text)
+        pass
 
-    if typ == "GET":
-        responce = requests.request(typ, url, headers=headers)
 
-    else:
-        responce = requests.request(typ, url, headers=headers, data=payload)
-        print(responce.text)
-        bucket_limit = responce.headers["x-ls-api-bucket-level"]
-        drip_rate = responce.headers["x-ls-api-drip-rate"]
-        os.environ["BUCKET_LIMIT"] = str(bucket_limit)
-        os.environ["DRIP_RATE"] = str(drip_rate)
-        print("bucket_limit", bucket_limit)
-        print("drip_rate", drip_rate)
 
+
+    print(responce.text)
+    bucket_limit = responce.headers["x-ls-api-bucket-level"]
+    drip_rate = responce.headers["x-ls-api-drip-rate"]
+    os.environ["BUCKET_LIMIT"] = str(bucket_limit)
+    os.environ["DRIP_RATE"] = str(drip_rate)
+    print("bucket_limit", bucket_limit)
+    print("drip_rate", drip_rate)
+    responce = json.loads(responce.text)
     return responce
 
     
@@ -113,17 +124,6 @@ def check_rate_limit(typ):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 def Get_New_Access_Token(client_id, client_secret, rt):
 
     today = datetime.datetime.now()
@@ -146,25 +146,6 @@ def Get_New_Access_Token(client_id, client_secret, rt):
     os.environ["EXPIRES_IN"] = str(expires_in)
 
     return 
-
-
-def account_info():
-    header = get_headers()
-    url = 'https://api.lightspeedapp.com/API/Account.json'
-    responce = requests.get(url=url, headers=header)
-
-    at = responce.json()
-    # print("ACCOUNT Status")
-    # print(at)
-
-    respnce = json.loads(responce.text)
-
-    account_id = (respnce['Account']['accountID'])
-    print("LightSpeed accountID = ", account_id)
-    print()
-
-    return account_id
-
 
 
 
