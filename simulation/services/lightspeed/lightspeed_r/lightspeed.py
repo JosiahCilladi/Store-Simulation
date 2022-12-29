@@ -7,7 +7,8 @@ import requests
 
 # time
 from time import *
-import datetime
+from datetime import datetime, timedelta
+from services.lightspeed.lightspeed_r.endpoints import *
 
 # Utilty
 from dotenv import load_dotenv
@@ -17,19 +18,34 @@ load_dotenv()  # take environment variables from .env.
 client_secret = os.environ.get("CLIENT_SECRET")
 client_id=os.environ.get("CLIENT_ID")
 refresh_token = os.environ.get("REFRESH_TOKEN")
-# access_token = os.environ.get("ACCESS_TOKEN")
-
-# access_token = ""
-header = ""
-accountID = ""
-expires_in = ""
-my_timer = ""
-Bucket_Limit = 0/60
-Drip_Rate = float(00.00)
 
 
+# today = datetime.now()
+# print("Today's date:", today)
 
+expires_time = datetime.now()
+
+
+# Check Access Token Experation Date and Refersh 
 def get_headers():
+    # expires_timestamp = os.environ.get("EXPIRES_TIMESTAMP")
+    
+    # print("expires_time",expires_time)
+    # if expires_time:
+    #     pass
+    # else:
+    #     Get_New_Access_Token(client_id, client_secret, refresh_token)
+
+
+    # expires_timestamp = datetime.strptime(expires_timestamp, '%y-%m-%d %H:%M:%S.%f')
+    
+    print("expires_in", os.environ.get("EXPIRES_IN"))
+    today = datetime.now()
+    print("today", today)
+    print("expires_time", expires_time)
+    if today >= expires_time:
+        Get_New_Access_Token(client_id, client_secret, refresh_token)
+    
 
     if os.environ.get("ACCESS_TOKEN"):
         pass
@@ -38,10 +54,10 @@ def get_headers():
         print("access_token", os.environ.get("ACCESS_TOKEN"))
 
 
-
+    # Add Access Tocken to the Header 
     headers = {"Authorization": "Bearer {0}".format(
         os.environ.get("ACCESS_TOKEN"))}
-    print("Check Responce")
+   
     
 
 
@@ -51,35 +67,52 @@ def get_headers():
 
 
 def send_request(typ,url,payload=None):
-    check_rate_limit(typ)
-
-    headers = get_headers()
+    tries = 4
     
     
     # try: Execpt Error Handling
     
-    try:
-        if typ == "GET":
-            responce = requests.request(typ, url, headers=headers)
-        else:
-            payload = json.dumps(payload)
-            responce = requests.request(typ, url, headers=headers, data=payload)
-    except:
-        print("***************************ERROR:", responce.text)
-        pass
+    # headers = get_headers()
+    for x in range(tries):
+        print("tries #", x)
+        try:
+            
+            check_rate_limit(typ)
+            headers = get_headers()
+            if typ == "GET":
+                responce = requests.request(typ, url, headers=headers)
+                print("Response Code", responce.status_code)
+            else:
+                payload = json.dumps(payload)
+                responce = requests.request(typ, url, headers=headers, data=payload)
+                print("Response Code", responce.status_code)
+
+             
+        except requests.exceptions.HTTPError as err:
+            print("***************************ERROR:", responce.text)
+            if err.response.status_code == 401:
+                print("******ERROR*******", err.response.status_code)
+                Get_New_Access_Token(client_id, client_secret, refresh_token)
+            elif err.response.status_code == 422:
+                print("******ERROR*******", err.response.status_code)
+            
+        if x == tries:
+            break
 
 
+        # print(responce.text)
+        bucket_limit = responce.headers["x-ls-api-bucket-level"]
+        drip_rate = responce.headers["x-ls-api-drip-rate"]
+        os.environ["BUCKET_LIMIT"] = str(bucket_limit)
+        os.environ["DRIP_RATE"] = str(drip_rate)
+        print("bucket_limit", bucket_limit)
+        print("drip_rate", drip_rate)
+        responce = json.loads(responce.text)
+        return responce
+   
 
-
-    print(responce.text)
-    bucket_limit = responce.headers["x-ls-api-bucket-level"]
-    drip_rate = responce.headers["x-ls-api-drip-rate"]
-    os.environ["BUCKET_LIMIT"] = str(bucket_limit)
-    os.environ["DRIP_RATE"] = str(drip_rate)
-    print("bucket_limit", bucket_limit)
-    print("drip_rate", drip_rate)
-    responce = json.loads(responce.text)
-    return responce
+    return False
+    
 
     
 def check_rate_limit(typ):
@@ -118,6 +151,8 @@ def check_rate_limit(typ):
         wait_time = (cost - bucket_remaining) / int(drip_rate)
         print("waiting", wait_time)
         sleep(wait_time)
+
+    
     
     return
 
@@ -125,10 +160,7 @@ def check_rate_limit(typ):
 
 
 def Get_New_Access_Token(client_id, client_secret, rt):
-
-    today = datetime.datetime.now()
-    print("Today's date:", today)
-
+    global expires_time
     payload = {
         'refresh_token': rt,
         'client_secret': client_secret,
@@ -140,10 +172,18 @@ def Get_New_Access_Token(client_id, client_secret, rt):
 
     access_token = responce['access_token']
     expires_in = responce['expires_in']
+    today = datetime.now()
+    expires_time = today
     print("access_token = ", access_token)
     print("expires_in", expires_in)
+    print("expires_time", expires_time)
     os.environ["ACCESS_TOKEN"] = str(access_token)
     os.environ["EXPIRES_IN"] = str(expires_in)
+    seconds = int(expires_in)
+    expires_time = expires_time + timedelta(seconds=seconds)
+    # os.environ["EXPIRES_TIMESTAMP"] = str(expires_time)
+    
+
 
     return 
 
@@ -169,3 +209,5 @@ def Onboard_New_Access_Token(self, client_id, client_secret, temp_Token):
 
 
 # check_rate_limit("POST")
+
+# Get_New_Access_Token(client_id, client_secret, refresh_token)

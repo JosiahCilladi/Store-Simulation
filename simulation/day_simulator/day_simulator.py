@@ -37,7 +37,7 @@ def start_day_simulation(time_span, num_shifts, num_total_sales, num_ecom):
     p = round(num_total_sales/num_ecom)
     q = p
     for i in range(0, num_total_sales + 1):
-        if i == 1:
+        if i == 0:
             print("Store Opens, Shift",1, "Starts *******************")
             # Open Register
             endpoints.open_register()

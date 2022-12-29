@@ -1,16 +1,16 @@
 # Files
 # from services.lightspeed.lightspeed_r import oauth
 
-from datetime import datetime
-import json
 
+import json
+from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
 load_dotenv()
 
 from services.lightspeed.lightspeed_r.lightspeed import *
 
 # creation datetime
-today = datetime.datetime.now(datetime.timezone.utc)
+today = datetime.utcnow()
 now = str(today.isoformat())
 
 
@@ -41,8 +41,11 @@ def open_register():
    
     # response = requests.request("POST", url, headers=headers, data=payload)
     response = send_request("POST", url, payload)
+
+    # reg_withdraw_id = response["RegisterWithdraw"]["registerWithdrawID"]
+    # amount = response["RegisterWithdraw"]["amount"]
+    # print("----------------------------------------Register #1 Open -- ","ID: ",reg_withdraw_id, "Cash: ",amount)
     print(json.dumps(response, indent=1))
-    
 
 
 def close_register():
@@ -56,7 +59,13 @@ def close_register():
         "closeEmployeeID": "1"
     }]
     response = send_request("POST", url, payload)
-    print(json.dumps(response, indent=1))
+    
+    reg_withdraw_id = response["RegisterCount"]["registerCountID"]
+    calculated = response["RegisterCount"]["RegisterCountAmounts"]["RegisterCountAmount"][0]["calculated"]
+    actual = response["RegisterCount"]["RegisterCountAmounts"]["RegisterCountAmount"][0]["actual"]
+    print("----------------------------------------Register #1 Close -- ",
+          "ID: ", reg_withdraw_id, "Cash Calculated: ",calculated,"Cash Actual", actual)
+    # print(json.dumps(response, indent=1))
 
 
 
@@ -108,11 +117,10 @@ def create_ecom_sale():
     response = send_request("POST", url, payload)
 
     
-    # sale_id = response["Sale"]["saleID"]
-    print(json.dumps(response, indent=1))
-    # create_sale_line(sale_id)
-    # complete_sale(sale_id)
+    sale_id = response["Sale"]["saleID"]
 
+    print("----------------------------------------eCom Order -- ID:", sale_id)
+    print(json.dumps(response, indent=1))
 
 
 def create_sale_line(sale_id):
@@ -208,12 +216,13 @@ def create_sale():
     
     response = send_request("POST", url, payload)
     
-    # sale_id = response["Sale"]["saleID"]
+    sale_id = response["Sale"]["saleID"]
+   
+
+    print("----------------------------------------Sale-- ID:", sale_id)
     print(json.dumps(response, indent=1))
-    # create_sale_line(sale_id)
-    # complete_sale(sale_id)
 
 
 
 
-account_info()
+# account_info()
