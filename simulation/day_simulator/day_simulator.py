@@ -97,6 +97,7 @@ def run_day_simulation(time_span, num_shifts, num_total_sales, num_ecom):
 
                     if i == num_total_sales:
                         pass
+                        simulation_running = False
                         print("********************** End of Day! **********************")
                         print("*********************************************************")
                     else:
