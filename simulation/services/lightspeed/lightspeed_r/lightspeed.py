@@ -148,7 +148,7 @@ def check_rate_limit(typ):
     if bucket_remaining > cost:
         pass
     else:
-        wait_time = (cost - bucket_remaining) / int(drip_rate)
+        wait_time = (cost - bucket_remaining) / float(drip_rate)
         print("waiting", wait_time)
         sleep(wait_time)
 

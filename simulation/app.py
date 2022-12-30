@@ -20,6 +20,7 @@ load_dotenv()  # take environment variables from .env.
 from api.api import api_blueprint
 import test_functions as TestFunctions
 from day_simulator.day_simulator import  get_day_simulation_config
+from services.lightspeed.lightspeed_r.endpoints import *
 
 
 # Slack OAuth
@@ -66,6 +67,43 @@ def open_modal(ack, body, client):
         # View payload
         view=startTemplateBlock
     )
+
+
+@bolt_app.action("open_register")
+def open_reg(ack, body, client):
+    # Acknowledge the command request
+    ack()
+    # Call views_open with the built-in client
+    open_register()
+
+
+@bolt_app.action("close_register")
+def close_reg(ack, body, client):
+    # Acknowledge the command request
+    ack()
+    # Call views_open with the built-in client
+    close_register()
+    
+
+@bolt_app.action("create_sale")
+def create_sales(ack, body, client):
+    # Acknowledge the command request
+    ack()
+    # Call views_open with the built-in client
+    create_sale()
+    
+
+@bolt_app.action("create_ecom_sale")
+def create_ecom_sales(ack, body, client):
+    # Acknowledge the command request
+    ack()
+    # Call views_open with the built-in client
+    
+    create_ecom_sale()
+    
+
+
+
 
 
 @bolt_app.view("view_1")

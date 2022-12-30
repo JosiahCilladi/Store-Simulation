@@ -68,6 +68,58 @@ def close_register():
     # print(json.dumps(response, indent=1))
 
 
+def create_sale():
+    print("create_sale")
+
+    url = "https://api.lightspeedapp.com/API/V3/Account/295355/Sale.json"
+
+    payload = [{
+        "discountPercent": "0",
+        "completed": "true",
+        "archived": "false",
+        "voided": "false",
+        "enablePromotions": "true",
+        "isTaxInclusive": "false",
+        "referenceNumber": "",
+        "receiptPreference": "printed",
+        "customerID": "1",
+        "discountID": "0",
+        "employeeID": "1",
+        "tipEmployeeID": "0",
+        "quoteID": "0",
+        "registerID": "1",
+        "shipToID": "0",
+        "shopID": "1",
+        "taxCategoryID": "0",
+        "SaleLines": {
+            "SaleLine": {
+                    "itemID": 1,
+                    "note": "Store Credit",
+                    "unitQuantity": 1,
+                    "unitPrice": 100,
+                    "taxClassID": 0,
+                    "avgCost": 0,
+                    "fifoCost": 0
+            }
+        },
+        "SalePayments": {
+            "SalePayment": {
+                "amount": 110,
+              		"paymentTypeID": 1,
+                "creditAccountID": 1
+            }
+        }
+
+    }]
+
+    response = send_request("POST", url, payload)
+
+    sale_id = response["Sale"]["saleID"]
+    calcSubtotal = response["Sale"]["calcSubtotal"]
+
+    print("----------------------------------------Sale-- ID:",
+          sale_id, "calcSubtotal:", calcSubtotal)
+    # print(json.dumps(response, indent=1))
 
 
 
@@ -118,15 +170,20 @@ def create_ecom_sale():
 
     
     sale_id = response["Sale"]["saleID"]
+    calcSubtotal = response["Sale"]["calcSubtotal"]
+    print("----------------------------------------eCom Order -- ID:",
+          sale_id, "calcSubtotal:", calcSubtotal)
+    # print(json.dumps(response, indent=1))
 
-    print("----------------------------------------eCom Order -- ID:", sale_id)
-    print(json.dumps(response, indent=1))
+
+
 
 
 def create_sale_line(sale_id):
     print("create_sale_line")
 
-    url = (f"https://api.lightspeedapp.com/API/V3/Account/295355/Sale/{sale_id}/SaleLine.json")
+    url = (
+        f"https://api.lightspeedapp.com/API/V3/Account/295355/Sale/{sale_id}/SaleLine.json")
 
     payload = [{
         "employeeID": "1",
@@ -138,11 +195,9 @@ def create_sale_line(sale_id):
 
     response = send_request("POST", url, payload)
 
-    
-
     print(json.dumps(response, indent=1))
 
-    
+
 def complete_sale(sale_id):
     print("complete_sale")
 
@@ -168,61 +223,5 @@ def complete_sale(sale_id):
 
     response = send_request("PUT", url, payload)
     print(json.dumps(response, indent=1))
-
-
-def create_sale():
-    print("create_sale")
-
-    url = "https://api.lightspeedapp.com/API/V3/Account/295355/Sale.json"
-
-    payload = [{
-        "discountPercent": "0",
-        "completed": "true",
-        "archived": "false",
-        "voided": "false",
-        "enablePromotions": "true",
-        "isTaxInclusive": "false",
-        "referenceNumber": "",
-        "receiptPreference": "printed",
-        "customerID": "1",
-        "discountID": "0",
-        "employeeID": "1",
-        "tipEmployeeID": "0",
-        "quoteID": "0",
-        "registerID": "1",
-        "shipToID": "0",
-        "shopID": "1",
-        "taxCategoryID": "0",
-            "SaleLines": {
-                "SaleLine": {
-                    "itemID": 1,
-                    "note": "Store Credit",
-                    "unitQuantity": 1,
-                    "unitPrice": 100,
-                    "taxClassID": 0,
-                    "avgCost": 0,
-                    "fifoCost": 0
-                }
-            },
-            "SalePayments": {
-                "SalePayment": {
-                    "amount": 110,
-          		"paymentTypeID": 1,
-                    "creditAccountID": 1
-                }
-            }
-
-    }]
-    
-    response = send_request("POST", url, payload)
-    
-    sale_id = response["Sale"]["saleID"]
-   
-
-    print("----------------------------------------Sale-- ID:", sale_id)
-    print(json.dumps(response, indent=1))
-
-
-
 
 # account_info()

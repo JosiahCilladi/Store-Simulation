@@ -46,11 +46,56 @@
           "type": "button",
           "text": {
             "type": "plain_text",
-            "text": "2",
+            "text": "Open Register",
             "emoji": true
           },
           "value": "2",
-          "action_id": "2"
+          "action_id": "open_register"
+        }
+      ]
+    },
+    {
+      "type": "actions",
+      "elements": [
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "text": "Close Register",
+            "emoji": true
+          },
+          "value": "2",
+          "action_id": "close_register"
+        }
+      ]
+    },
+    {
+      "type": "actions",
+      "elements": [
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "text": "Create Sale",
+            "emoji": true
+          },
+          "value": "2",
+          "action_id": "create_sale"
+        }
+      ]
+    },
+    {
+      "type": "actions",
+      "elements": [
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "text": "Create eCom Sale",
+            "emoji": true
+          },
+          "value": "2",
+          "action_id": "create_ecom_sale"
         }
       ]
     }
