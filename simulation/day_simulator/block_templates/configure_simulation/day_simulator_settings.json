@@ -2,7 +2,7 @@
   "type": "modal",
 
   "callback_id": "view_1",
-  "title": { "type": "plain_text", "text": "Todays Simulation" },
+  "title": { "type": "plain_text", "text": "Day Simulation" },
   "submit": { "type": "plain_text", "text": "Start" },
   "blocks": [
     {
@@ -17,7 +17,7 @@
 
       "text": {
         "type": "mrkdwn",
-        "text": ":clock8: *Time Span*"
+        "text": ":clock8: *Shop Schedule:*"
       }
     },
     {
@@ -53,10 +53,13 @@
       }
     },
     {
+      "type": "divider"
+    },
+    {
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": ":tshirt: *Items Sold:*"
+        "text": ":tshirt: *Sales Numbers:*"
       }
     },
     {
@@ -95,21 +98,6 @@
         "text": "Orders",
         "emoji": true
       }
-    },
-    {
-      "type": "actions",
-      "elements": [
-        {
-          "type": "button",
-          "text": {
-            "type": "plain_text",
-            "text": "clear",
-            "emoji": true
-          },
-          "value": "clear_day_sim_config",
-          "action_id": "clear_day_sim_config"
-        }
-      ]
     }
   ]
 }

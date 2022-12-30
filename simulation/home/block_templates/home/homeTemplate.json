@@ -5,7 +5,7 @@
       "type": "header",
       "text": {
         "type": "plain_text",
-        "text": "Simulation",
+        "text": "Day Simulation",
         "emoji": true
       }
     },
@@ -25,6 +25,17 @@
           },
           "value": "configure_simulation_button",
           "action_id": "configure_simulation_button"
+        },
+        {
+          "type": "button",
+          "style": "danger",
+          "text": {
+            "type": "plain_text",
+            "text": "Stop",
+            "emoji": true
+          },
+          "value": "stop",
+          "action_id": "stop_day_simulation"
         }
       ]
     },
@@ -32,7 +43,7 @@
       "type": "header",
       "text": {
         "type": "plain_text",
-        "text": "Create",
+        "text": "Register",
         "emoji": true
       }
     },
@@ -68,6 +79,17 @@
           "action_id": "close_register"
         }
       ]
+    },
+    {
+      "type": "header",
+      "text": {
+        "type": "plain_text",
+        "text": "Sales",
+        "emoji": true
+      }
+    },
+    {
+      "type": "divider"
     },
     {
       "type": "actions",

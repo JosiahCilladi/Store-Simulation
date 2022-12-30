@@ -1,6 +1,5 @@
 # system
 import os
-import re
 import json
 
 #Server
@@ -19,7 +18,7 @@ load_dotenv()  # take environment variables from .env.
 # files
 from api.api import api_blueprint
 import test_functions as TestFunctions
-from day_simulator.day_simulator import  get_day_simulation_config
+from day_simulator.day_simulator import  *
 from services.lightspeed.lightspeed_r.endpoints import *
 
 
@@ -70,7 +69,7 @@ def open_modal(ack, body, client):
 
 
 @bolt_app.action("open_register")
-def open_reg(ack, body, client):
+def open_reg(ack):
     # Acknowledge the command request
     ack()
     # Call views_open with the built-in client
@@ -78,7 +77,7 @@ def open_reg(ack, body, client):
 
 
 @bolt_app.action("close_register")
-def close_reg(ack, body, client):
+def close_reg(ack):
     # Acknowledge the command request
     ack()
     # Call views_open with the built-in client
@@ -86,7 +85,7 @@ def close_reg(ack, body, client):
     
 
 @bolt_app.action("create_sale")
-def create_sales(ack, body, client):
+def create_sales(ack):
     # Acknowledge the command request
     ack()
     # Call views_open with the built-in client
@@ -94,13 +93,20 @@ def create_sales(ack, body, client):
     
 
 @bolt_app.action("create_ecom_sale")
-def create_ecom_sales(ack, body, client):
+def create_ecom_sales(ack):
     # Acknowledge the command request
     ack()
     # Call views_open with the built-in client
     
     create_ecom_sale()
     
+
+@bolt_app.action("stop_day_simulation")
+def stop_day_simulation(ack):
+    # Acknowledge the command request
+    ack()
+    # Call views_open with the built-in client
+    stop_day_sim()
 
 
 

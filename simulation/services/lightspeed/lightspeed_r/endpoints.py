@@ -71,6 +71,8 @@ def close_register():
     # print(json.dumps(response, indent=1))
 
 
+
+
 def create_sale():
     print("create_sale")
 

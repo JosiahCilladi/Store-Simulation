@@ -41,8 +41,8 @@ def get_headers():
     
     print("expires_in", os.environ.get("EXPIRES_IN"))
     today = datetime.now()
-    print("today       ", today)
     print("expires_time", expires_time)
+    print("today       ", today)
     if today >= expires_time:
         Get_New_Access_Token(client_id, client_secret, refresh_token)
     
