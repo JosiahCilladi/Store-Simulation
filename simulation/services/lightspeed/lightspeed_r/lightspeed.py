@@ -41,7 +41,7 @@ def get_headers():
     
     print("expires_in", os.environ.get("EXPIRES_IN"))
     today = datetime.now()
-    print("today", today)
+    print("today       ", today)
     print("expires_time", expires_time)
     if today >= expires_time:
         Get_New_Access_Token(client_id, client_secret, refresh_token)
@@ -74,7 +74,7 @@ def send_request(typ,url,payload=None):
     
     # headers = get_headers()
     for x in range(tries):
-        print("tries #", x)
+        print("error try: #", x)
         try:
             
             check_rate_limit(typ)
@@ -85,7 +85,7 @@ def send_request(typ,url,payload=None):
             else:
                 payload = json.dumps(payload)
                 responce = requests.request(typ, url, headers=headers, data=payload)
-                print("Response Code", responce.status_code)
+                print("Response Code:", responce.status_code)
 
              
         except requests.exceptions.HTTPError as err:
@@ -105,8 +105,8 @@ def send_request(typ,url,payload=None):
         drip_rate = responce.headers["x-ls-api-drip-rate"]
         os.environ["BUCKET_LIMIT"] = str(bucket_limit)
         os.environ["DRIP_RATE"] = str(drip_rate)
-        print("bucket_limit", bucket_limit)
-        print("drip_rate", drip_rate)
+        print("bucket_limit:", bucket_limit)
+        print("drip_rate:", drip_rate)
         responce = json.loads(responce.text)
         return responce
    
@@ -127,13 +127,14 @@ def check_rate_limit(typ):
         pass
     else:
         drip_rate = 1
-    print("bucket_limit", bucket_limit)
+    print("bucket_limit:", bucket_limit)
+    print("drip_rate:", drip_rate)
     bucket_limit = bucket_limit.split("/")
     bucket_size = float(bucket_limit[1])
     bucket_level = float(bucket_limit[0])
     bucket_remaining = bucket_size - bucket_level
 
-    print("bucket", bucket_size, bucket_level)
+    #print("bucket", bucket_size, bucket_level)
     cost = 10
 
     if typ == "POST" or typ == "PUT" or typ == "DELETE":
@@ -141,15 +142,15 @@ def check_rate_limit(typ):
     elif typ == "GET":
         cost = 1
 
-    print("COST", cost)
+    print("rate cost:", cost)
 
-    print(typ,bucket_limit,drip_rate)
+    # print(typ,bucket_limit,drip_rate)
 
     if bucket_remaining > cost:
         pass
     else:
         wait_time = (cost - bucket_remaining) / float(drip_rate)
-        print("waiting", wait_time)
+        print("...waiting", wait_time)
         sleep(wait_time)
 
     

@@ -41,8 +41,8 @@ def start_day_simulation(time_span, num_shifts, num_total_sales, num_ecom):
             print("Store Opens, Shift",1, "Starts *******************")
             # Open Register
             endpoints.open_register()
-
-        print("sale num",i)
+        # print("--------------------------------------------------------------")
+        print("Sale Number:",i)
         # Create Sale
         endpoints.create_sale()
 

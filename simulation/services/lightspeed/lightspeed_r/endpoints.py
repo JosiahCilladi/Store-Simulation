@@ -42,10 +42,12 @@ def open_register():
     # response = requests.request("POST", url, headers=headers, data=payload)
     response = send_request("POST", url, payload)
 
-    # reg_withdraw_id = response["RegisterWithdraw"]["registerWithdrawID"]
-    # amount = response["RegisterWithdraw"]["amount"]
-    # print("----------------------------------------Register #1 Open -- ","ID: ",reg_withdraw_id, "Cash: ",amount)
-    print(json.dumps(response, indent=1))
+    reg_withdraw_id = response["RegisterWithdraw"]["registerWithdrawID"]
+    amount = response["RegisterWithdraw"]["amount"]
+    print("------------Register #1 Open ------------ ", "ID: ",
+          reg_withdraw_id, "Cash: ", amount)
+    print("--------------------------------------------------------------")
+    # print(json.dumps(response, indent=1))
 
 
 def close_register():
@@ -63,8 +65,9 @@ def close_register():
     reg_withdraw_id = response["RegisterCount"]["registerCountID"]
     calculated = response["RegisterCount"]["RegisterCountAmounts"]["RegisterCountAmount"][0]["calculated"]
     actual = response["RegisterCount"]["RegisterCountAmounts"]["RegisterCountAmount"][0]["actual"]
-    print("----------------------------------------Register #1 Close -- ",
+    print("------------Register #1 Close -- ",
           "ID: ", reg_withdraw_id, "Cash Calculated: ",calculated,"Cash Actual", actual)
+    print("--------------------------------------------------------------")
     # print(json.dumps(response, indent=1))
 
 
@@ -117,8 +120,9 @@ def create_sale():
     sale_id = response["Sale"]["saleID"]
     calcSubtotal = response["Sale"]["calcSubtotal"]
 
-    print("----------------------------------------Sale-- ID:",
+    print("------------Sale------------ ID:",
           sale_id, "calcSubtotal:", calcSubtotal)
+    print("--------------------------------------------------------------")
     # print(json.dumps(response, indent=1))
 
 
@@ -171,57 +175,57 @@ def create_ecom_sale():
     
     sale_id = response["Sale"]["saleID"]
     calcSubtotal = response["Sale"]["calcSubtotal"]
-    print("----------------------------------------eCom Order -- ID:",
+    print("------------eCom Order------------ ID:",
           sale_id, "calcSubtotal:", calcSubtotal)
+    print("--------------------------------------------------------------")
     # print(json.dumps(response, indent=1))
 
 
 
 
+# def create_sale_line(sale_id):
+#     print("create_sale_line")
 
-def create_sale_line(sale_id):
-    print("create_sale_line")
+#     url = (
+#         f"https://api.lightspeedapp.com/API/V3/Account/295355/Sale/{sale_id}/SaleLine.json")
 
-    url = (
-        f"https://api.lightspeedapp.com/API/V3/Account/295355/Sale/{sale_id}/SaleLine.json")
+#     payload = [{
+#         "employeeID": "1",
+#         "itemID": "1",
+#         "shopID": "1",
+#         "saleID": sale_id,
+#         "createTime": now
+#     }]
 
-    payload = [{
-        "employeeID": "1",
-        "itemID": "1",
-        "shopID": "1",
-        "saleID": sale_id,
-        "createTime": now
-    }]
+#     response = send_request("POST", url, payload)
 
-    response = send_request("POST", url, payload)
-
-    print(json.dumps(response, indent=1))
+#     print(json.dumps(response, indent=1))
 
 
-def complete_sale(sale_id):
-    print("complete_sale")
+# def complete_sale(sale_id):
+#     print("complete_sale")
 
-    url = (
-        f"https://api.lightspeedapp.com/API/V3/Account/295355/Sale/{sale_id}.json")
+#     url = (
+#         f"https://api.lightspeedapp.com/API/V3/Account/295355/Sale/{sale_id}.json")
 
-    payload = [{
-        "discountPercent": "0",
-        "completed": "true",
-        "completeTime": now,
-        "enablePromotions": "true",
-        "isTaxInclusive": "false",
-        "receiptPreference": "printed",
-        "customerID": "1",
-        "discountID": "0",
-        "employeeID": "1",
-        "quoteID": "0",
-        "registerID": "1",
-        "shipToID": "0",
-        "shopID": "1",
-        "taxCategoryID": "1"
-    }]
+#     payload = [{
+#         "discountPercent": "0",
+#         "completed": "true",
+#         "completeTime": now,
+#         "enablePromotions": "true",
+#         "isTaxInclusive": "false",
+#         "receiptPreference": "printed",
+#         "customerID": "1",
+#         "discountID": "0",
+#         "employeeID": "1",
+#         "quoteID": "0",
+#         "registerID": "1",
+#         "shipToID": "0",
+#         "shopID": "1",
+#         "taxCategoryID": "1"
+#     }]
 
-    response = send_request("PUT", url, payload)
-    print(json.dumps(response, indent=1))
+#     response = send_request("PUT", url, payload)
+#     print(json.dumps(response, indent=1))
 
-# account_info()
+# # account_info()
