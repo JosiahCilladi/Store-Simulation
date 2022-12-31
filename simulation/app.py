@@ -113,7 +113,7 @@ def stop_day_simulation(ack):
 
 
 @bolt_app.view("view_1")
-def handle_day_simulation_config_sumbit(ack, body, view ,logger):
+def handle_day_simulation_config_sumbit(ack, view):
     ack()
     
     input_data = view["state"]["values"]
@@ -147,6 +147,8 @@ def slack_events():
 with open('simulation/home/block_templates/home/homeTemplate.json') as home:
     homeTemplate = json.load(home)
 
+
+@bolt_app.view("view_1")
 @bolt_app.event("app_home_opened")
 def update_home_tab(client, event, logger):
     try:

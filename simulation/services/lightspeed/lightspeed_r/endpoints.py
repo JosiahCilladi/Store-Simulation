@@ -7,7 +7,7 @@ from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
 load_dotenv()
 
-from services.lightspeed.lightspeed_r.lightspeed import *
+from services.lightspeed.lightspeed_r.lightspeed_r_auth import *
 
 # creation datetime
 today = datetime.utcnow()
@@ -23,7 +23,7 @@ def account_info():
   
 
     print(json.dumps(response, indent=1))
-
+    
 
 
 def open_register():
