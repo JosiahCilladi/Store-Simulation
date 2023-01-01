@@ -25,8 +25,10 @@ def account_info():
     print(json.dumps(response, indent=1))
     
     account_id = int(response["Account"]["accountID"])
+    name = str(response["Account"]["name"])
+    
     # account_id = "ddd"
-    return account_id
+    return (account_id, name)
     
 
 
