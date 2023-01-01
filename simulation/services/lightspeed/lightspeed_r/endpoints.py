@@ -24,6 +24,10 @@ def account_info():
 
     print(json.dumps(response, indent=1))
     
+    account_id = int(response["Account"]["accountID"])
+    # account_id = "ddd"
+    return account_id
+    
 
 
 def open_register():
